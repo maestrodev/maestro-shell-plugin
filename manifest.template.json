@@ -1,0 +1,35 @@
+{
+  "tasks": [{
+    "name": "ant",
+    "description": "Run An Ant Task",
+    "license": "Apache 2.0",
+    "author":  "MaestroDev",
+    "version": "updated at build time",
+    "class":   "MaestroDev::AntWorker",
+    "type":    "ruby",
+    "dependencies":[
+    ],
+    "task":{
+      "command": "/shell/execute",
+      "description": "Run The Shell Command Whoami",
+      "name": "cmd",
+      "inputs": {
+        "command_string": {
+          "description": "",
+          "required": true,
+          "type": "String",
+          "value": "whoami"
+        },
+        "environment": {
+          "description": "Environment Variables",
+          "required": false,
+          "type": "String",
+          "value": ""
+        }
+      },
+      "outputs": {"output" : {"type" : "String"}},
+      "tool_name": "Shell",
+      "icon": "shell.png"
+    }
+  }]
+}
