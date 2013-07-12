@@ -1,6 +1,6 @@
 {
   "tasks": [{
-    "name": "shell",
+    "name": "shell execute",
     "description": "Run An Shell Task",
     "license": "Apache 2.0",
     "author":  "MaestroDev",
