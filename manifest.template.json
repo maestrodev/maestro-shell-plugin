@@ -1,11 +1,11 @@
 {
   "tasks": [{
-    "name": "ant",
-    "description": "Run An Ant Task",
+    "name": "shell",
+    "description": "Run An Shell Task",
     "license": "Apache 2.0",
     "author":  "MaestroDev",
     "version": "updated at build time",
-    "class":   "MaestroDev::AntWorker",
+    "class":   "MaestroDev::ShellWorker",
     "type":    "ruby",
     "dependencies":[
     ],
