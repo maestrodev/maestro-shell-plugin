@@ -29,7 +29,7 @@ module MaestroDev
         Maestro.log.warn("Error executing Shell Task: #{e.class} #{e}: " + e.backtrace.join("\n"))
       end
   
-      write_output "\n\nSHELL task complete"
+      write_output "\n\nSHELL task complete\n"
       set_error(@error) if @error
     end
 
@@ -47,6 +47,7 @@ module MaestroDev
 
       @command_string = get_field('command_string', '')
       @environment = get_field('environment', '')
+      @env = @environment.empty? ? "" : "#{Maestro::Util::Shell::ENV_EXPORT_COMMAND} #{@environment.gsub(/(&&|[;&])\s*$/, '')} && "
 
       errors << "missing field command_string" if @command_string.empty?
 
@@ -56,7 +57,7 @@ module MaestroDev
     end
 
     def create_command
-      shell_command = "#{@environment} #{@command_string}"
+      shell_command = "#{@env}#{@command_string}"
       set_field('command', shell_command)
       Maestro.log.debug("Running #{shell_command}")
       shell_command
