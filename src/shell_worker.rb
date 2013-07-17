@@ -17,8 +17,10 @@ module MaestroDev
         Maestro.log.info "Inputs: command_string = #{@command_string}"
 
         shell = Maestro::Util::Shell.new
-        shell.create_script(create_command)
+        command = create_command
+        shell.create_script(command)
 
+        write_output("\nRunning command:\n----------\n#{command.chomp}\n----------\n")
         exit_code = shell.run_script_with_delegate(self, :on_output)
 
         @error = shell.output unless exit_code.success?
@@ -33,7 +35,7 @@ module MaestroDev
       set_error(@error) if @error
     end
 
-    def on_output(text, is_stderr)
+    def on_output(text)
       write_output(text, :buffer => true)
     end
 
