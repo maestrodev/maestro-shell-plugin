@@ -17,7 +17,7 @@
 
 require 'spec_helper'
 
-describe MaestroDev::ShellWorker do
+describe MaestroDev::ShellPlugin::ShellWorker do
 
   before(:all) do
     Maestro::MaestroWorker.mock!
