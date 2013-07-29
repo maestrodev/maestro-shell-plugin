@@ -17,7 +17,7 @@
 
 require 'spec_helper'
 
-describe MaestroDev::ShellPlugin::ShellWorker do
+describe MaestroDev::Plugin::ShellWorker do
 
   before(:all) do
     Maestro::MaestroWorker.mock!
@@ -65,7 +65,7 @@ describe MaestroDev::ShellPlugin::ShellWorker do
 
       subject.perform(:execute, workitem)
 
-      workitem['fields']['__error__'].should include "No such file or directory"
+      workitem['fields']['__error__'].should eq "Error executing shell task"
       workitem['__output__'].should include "No such file or directory"
     end
 

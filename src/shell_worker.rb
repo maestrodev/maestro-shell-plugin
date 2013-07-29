@@ -3,37 +3,23 @@ require 'maestro_plugin'
 require 'maestro_shell'
 
 module MaestroDev
-  module ShellPlugin
-    class ConfigError < StandardError
-    end
+  module Plugin
     
     class ShellWorker < Maestro::MaestroWorker
   
       def execute
-        write_output("\nSHELL task starting\n", :buffer => true)
+        validate_parameters
   
-        begin
-          validate_parameters
+        Maestro.log.info "Inputs: command_string = #{@command_string}"
   
-          Maestro.log.info "Inputs: command_string = #{@command_string}"
+        shell = Maestro::Util::Shell.new
+        command = create_command
+        shell.create_script(command)
   
-          shell = Maestro::Util::Shell.new
-          command = create_command
-          shell.create_script(command)
+        write_output("\nRunning command:\n----------\n#{command.chomp}\n----------\n")
+        exit_code = shell.run_script_with_delegate(self, :on_output)
   
-          write_output("\nRunning command:\n----------\n#{command.chomp}\n----------\n")
-          exit_code = shell.run_script_with_delegate(self, :on_output)
-  
-          @error = shell.output unless exit_code.success?
-        rescue ConfigError => e
-          @error = e.message
-        rescue Exception => e
-          @error = "Error executing Shell Task: #{e.class} #{e}"
-          Maestro.log.warn("Error executing Shell Task: #{e.class} #{e}: " + e.backtrace.join("\n"))
-        end
-    
-        write_output "\n\nSHELL task complete\n"
-        set_error(@error) if @error
+        raise PluginError, 'Error executing shell task' unless exit_code.success?
       end
   
       def on_output(text)
