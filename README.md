@@ -1,5 +1,6 @@
 maestro-shell-plugin
 ====================
+[![Code Climate](https://codeclimate.com/github/maestrodev/maestro-shell-plugin.png)](https://codeclimate.com/github/maestrodev/maestro-shell-plugin)
 
 A Maestro Plugin that allows execution of shell commands
 
