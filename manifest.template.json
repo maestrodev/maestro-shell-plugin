@@ -1,4 +1,5 @@
 {
+  "image": "shell.png",
   "tasks": [{
     "name": "shell execute",
     "description": "Run An Shell Task",

@@ -10,8 +10,6 @@ module MaestroDev
       def execute
         validate_parameters
   
-        Maestro.log.info "Inputs: command_string = #{@command_string}"
-  
         shell = Maestro::Util::Shell.new
         command = create_command
         shell.create_script(command)
@@ -48,7 +46,6 @@ module MaestroDev
       def create_command
         shell_command = "#{@env}#{@command_string}"
         set_field('command', shell_command)
-        Maestro.log.debug("Running #{shell_command}")
         shell_command
       end
   
