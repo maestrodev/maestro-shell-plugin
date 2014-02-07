@@ -1,36 +1,39 @@
 {
-  "image": "shell.png",
+  "schema_version": 2,
+  "name":           "Shell Commands",
+  "description":    "Allows execution of shell commands",
+  "license":        "Apache 2.0",
+  "author":         "MaestroDev",
+  "version":        "updated at build time",
+  "type":           "ruby",
+  "image":          "shell.png",
+  "tool_name":      "Shell",
+  "tags":           ["shell", "cmd", "bash"],
   "tasks": [{
-    "name": "shell execute",
+    "name":        "shell execute",
     "description": "Run An Shell Task",
-    "license": "Apache 2.0",
-    "author":  "MaestroDev",
-    "version": "updated at build time",
-    "class":   "MaestroDev::Plugin::ShellWorker",
-    "type":    "ruby",
-    "dependencies":[
-    ],
+    "class":       "MaestroDev::Plugin::ShellWorker",
     "task":{
-      "command": "/shell/execute",
+      "command":     "/shell/execute",
       "description": "Run The Shell Command Whoami",
-      "name": "cmd",
+      "name":        "cmd",
       "inputs": {
         "command_string": {
-          "description": "",
-          "required": true,
-          "type": "String",
-          "value": "whoami"
+          "label":       "Commands",
+          "description": "The shell commands to execute",
+          "required":    true,
+          "type":        "Text",
+          "value":       "whoami"
         },
         "environment": {
-          "description": "Environment Variables",
-          "required": false,
-          "type": "String",
-          "value": ""
+          "label":       "Environment",
+          "description": "Environment Variables to set",
+          "required":    false,
+          "type":        "String",
+          "value":       ""
         }
       },
-      "outputs": {"output" : {"type" : "String"}},
-      "tool_name": "Shell",
-      "icon": "shell.png"
+      "outputs": {"output" : {"type" : "String"}}
     }
   }]
 }

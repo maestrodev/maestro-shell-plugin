@@ -21,6 +21,7 @@ require 'rspec'
 $LOAD_PATH.unshift(File.dirname(__FILE__) + '/../src') unless $LOAD_PATH.include?(File.dirname(__FILE__) + '/../src')
 
 require 'shell_worker'
+require 'maestro_plugin/logging_stdout'
 
 RSpec.configure do |config|
 end
