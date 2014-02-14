@@ -17,7 +17,7 @@ module MaestroDev
         write_output("\nRunning command:\n----------\n#{command.chomp}\n----------\n")
         exit_code = shell.run_script_with_delegate(self, :on_output)
   
-        raise PluginError, 'Error executing shell task' unless exit_code.success?
+        raise(PluginError, "Error executing shell task, exit code was #{exit_code.exit_code}") unless exit_code.success?
       end
   
       def on_output(text)

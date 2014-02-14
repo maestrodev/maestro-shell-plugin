@@ -65,7 +65,7 @@ describe MaestroDev::Plugin::ShellWorker do
 
       subject.perform(:execute, workitem)
 
-      workitem['fields']['__error__'].should eq "Error executing shell task"
+      workitem['fields']['__error__'].should eq "Error executing shell task, exit code was 1"
       workitem['__output__'].should include "No such file or directory"
     end
 
