@@ -19,66 +19,45 @@ require 'spec_helper'
 
 describe MaestroDev::Plugin::ShellWorker do
 
+  let(:command) { 'ls -l /blahdy/' }
+  let(:workitem) {{ 'fields' => fields }}
+  let(:fields) {{ 'command_string' => command }}
+
   before(:all) do
     Maestro::MaestroWorker.mock!
   end
 
   before(:each) do
     FileUtils.rm '/tmp/shell.sh' if File.exists? '/tmp/shell.sh'
+    subject.perform(:execute, workitem)
   end
 
   describe 'valid_workitem?' do
-    it "should validate fields" do
-      workitem = {'fields' =>{}}
-
-      subject.perform(:execute, workitem)
-
-      workitem['fields']['__error__'].should include('missing field command_string')
+    context "when fields are empty" do
+      let(:fields) {{}}
+      its(:error) { should include('missing field command_string') }
     end
   end
 
   describe 'execute' do
-    before :all do
-#      @workitem =  {'fields' => {'tasks' => '',
-#                                 'path' => @path,
-#                                 'ant_version' => '1.8.2'}}
-    end
 
-    it 'should return successfully with valid command' do
-      command = 'touch /tmp/archive_test.tar.gz && ls -l /tmp/archive_test.tar.gz'
-      workitem = {'fields' => {
-        'command_string' => command, 
-        'environment' => 'PATH=$PATH;'
-      }}
-
-      subject.perform(:execute, workitem)
-
-      workitem['fields']['__error__'].should be_nil
-      workitem['__output__'].should include("archive_test.tar.gz")
+    context 'when using a valid command' do
+      let(:command) { 'touch /tmp/archive_test.tar.gz && ls -l /tmp/archive_test.tar.gz' }
+      let(:fields) { super().merge({'environment' => 'PATH=$PATH;'}) }
+      its(:error) { should be_nil }
+      its(:output) { should include("archive_test.tar.gz") }
     end
     
-    it 'should return successfully with invalid command' do
-      command = 'ls -l /blahdy/'
-      workitem = {'fields' => {
-        'command_string' => command
-      }}
-
-      subject.perform(:execute, workitem)
-
-      workitem['fields']['__error__'].should eq "Error executing shell task, exit code was 1"
-      workitem['__output__'].should include "No such file or directory"
+    context 'when running an invalid command' do
+      let(:command) { 'ls -l /blahdy/' }
+      its(:error) { should match(/^Error executing shell task, exit code was \d$/) }
+      its(:output) { should include "No such file or directory" }
     end
 
-    it 'should write the output to lucee' do
-      command = 'echo my message'
-      workitem = {'fields' => {
-        'command_string' => command
-      }}
-
-      subject.perform(:execute, workitem)
-
-      workitem['fields']['__error__'].should be_nil
-      workitem['__output__'].should include("my message\n")
+    context 'when writing output to lucee' do
+      let(:command) { 'echo my message' }
+      its(:error) { should be_nil }
+      its(:output) { should include("my message\n") }
     end
   end
 end
